@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+  .circle-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    font-size: 28px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .circle-button:hover {
+    background-color: #f4c542;
+    transform: scale(1.1);
+  }
+</style>
+
+
+
+
+<style>
+
+
+/* MODAL OVERLAY */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.7);
+}
+
+/* MODAL BOX */
+.modal-content {
+  background-color: #141414;
+  margin: 5% auto;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  color: white;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* CLOSE BUTTON */
+.close {
+  color: #aaa;
+  font-size: 28px;
+  position: absolute;
+  top: 10px; right: 20px;
+  cursor: pointer;
+}
+
+/* FORM */
+.modal-content input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  background: #222;
+  color: white;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #f4c542;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.separator {
+  text-align: center;
+  margin: 20px 0;
+  color: #aaa;
+  position: relative;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  background: #555;
+  height: 1px;
+  width: 40%;
+  position: absolute;
+  top: 50%;
+}
+
+.separator::before {
+  left: 0;
+}
+
+.separator::after {
+  right: 0;
+}
+
+.separator span {
+  display: inline-block;
+  transform: rotate(-45deg);
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.horizontal-separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: #aaa;
+}
+
+.horizontal-separator::before,
+.horizontal-separator::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #555;
+}
+
+.horizontal-separator span {
+  padding: 0 12px;
+  font-size: 14px;
+  background-color: #141414; /* Match your modal background */
+}
+
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Ensure icon + text start from the left */
+  gap: 12px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+
+
+.social-btn .icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: inline-block;
+}
+
+
+.google {
+  background-color: #ffffff;
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+.microsoft {
+  background-color: #2F2F2F;
+  color: white;
+}
+
+.apple {
+  background-color: #000;
+  color: white;
+}
+
+.social-btn:hover {
+  opacity: 0.9;
+}
+
+.modal.popup-container {
+  pointer-events: auto;
+}
+
+</style>
+
+<style>
+  .login-signup-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 28px;
+    background-color: #f4c542;
+    color: #000;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(244, 197, 66, 0.3);
+    border: 1px solid transparent;
+  }
+
+  .login-signup-button ion-icon {
+    font-size: 18px;
+    transition: transform 0.3s;
+  }
+
+  .login-signup-button:hover {
+    background-color: #ffd700;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+    border: 1px solid #fff3b0;
+  }
+
+  .login-signup-button:hover ion-icon {
+    transform: scale(1.2);
+  }
+
+  .popup .icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: white;
+}
+
+.login-signup-button-wrapper {
+  position: relative;
+}
+
+
+
+.logout-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #1c1c1c;
+  border: 1px solid #333;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  font-size: 14px;
+  z-index: 9999;
+  display: none;
+}
+
+.logout-menu a {
+  color: white;
+  text-decoration: none;
+  display: block;
+}
+
+.logout-menu a:hover {
+  background: #333;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+
+
+</style>
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 
+    - primary meta tags
+  -->
+  <title>Crown & Spice - Amazing & Delicious Food</title>
+  <meta name="title" content="Crown & Spice - Amazing & Delicious Food">
+  <meta name="description" content="This is a Restaurant html template made by Crown & Spice">
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- 
+    - preload images
+  -->
+  <link rel="preload" as="image" href="./assets/images/hero-slider-1.jpg">
+  <link rel="preload" as="image" href="./assets/images/hero-slider-2.jpg">
+  <link rel="preload" as="image" href="./assets/images/hero-slider-3.jpg">
+
+</head>
+
+<body id="top">
+
+  <!-- 
+    - #PRELOADER
+  -->
+
+  <div class="preload" data-preaload>
+    <div class="circle"></div>
+    <p class="text">Crown & Spice</p>
+  </div>
+
+
+
+
+
+  <!-- 
+    - #TOP BAR
+  -->
+
+  <div class="topbar">
+    <div class="container">
+
+      <address class="topbar-item">
+        <div class="icon">
+          <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+        </div>
+
+        <span class="span">
+      MG Road, Delicious City, Bangalore 560001, India
+        </span>
+      </address>
+
+      <div class="separator"></div>
+
+      <div class="topbar-item item-2">
+        <div class="icon">
+          <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+        </div>
+
+        <span class="span">Daily : 9.00 am to 1.00 pm</span>
+      </div>
+
+      <a href="tel:+11234567890" class="topbar-item link">
+        <div class="icon">
+          <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
+        </div>
+
+        <span class="span">+91 98765 43210</span>
+      </a>
+
+      <div class="separator"></div>
+
+      <a href="mailto:booking@restaurant.com" class="topbar-item link">
+        <div class="icon">
+          <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+        </div>
+
+        <span class="span">booking@Crown&Spice.in</span>
+      </a>
+
+    </div>
+  </div>
+
+
+
+
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <a href="#" class="logo">
+        <img src="./assets/images/new logo3.jpg" width="160" height="50" alt="Crown & Spice - Home">
+      </a>
+
+      <nav class="navbar" data-navbar>
+
+        <button class="close-btn" aria-label="close menu" data-nav-toggler>
+          <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        </button>
+
+        <a href="#" class="logo">
+          <img src="./assets/images/new logo3.jpg" width="160" height="50" alt="Crown & Spice - Home">
+        </a>
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <a href="#home" class="navbar-link hover-underline active">
+              <div class="separator"></div>
+
+              <span class="span">Home</span>
+            </a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="#menu" class="navbar-link hover-underline">
+              <div class="separator"></div>
+
+              <span class="span">Menus</span>
+            </a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="#about" class="navbar-link hover-underline">
+              <div class="separator"></div>
+
+              <span class="span">About Us</span>
+            </a>
+          </li>
+
+          
+
+          <li class="navbar-item">
+            <a href="#contact" class="navbar-link hover-underline scroll-to-footer">
+             <div class="separator"></div>
+            <span class="span">Contact</span>
+            </a>
+
+          </li>
+
+        </ul>
+
+        <div class="text-center">
+          <p class="headline-1 navbar-title">Visit Us</p>
+
+          <address class="body-4">
+           MG Road, Delicious City, <br>
+            Bangalore 560001, India
+
+          </address>
+
+          <p class="body-4 navbar-text">Open: 9.30 am - 2.30pm</p>
+
+          <a href="mailto:booking@Crown & Spice.com" class="body-4 sidebar-link">booking@Crown & Spice.com</a>
+
+          <div class="separator"></div>
+
+          <p class="contact-label">Booking Request</p>
+
+          <a href="tel:+88123123456" class="body-1 contact-number hover-underline">
+            +91-98765-43210
+          </a>
+        </div>
+
+      </nav>
+
+ <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 10px;">
+  <!-- Login / Welcome Button -->
+  <a href="#" class="login-signup-button">
+    <ion-icon name="person-outline"></ion-icon>
+    <span>Login / Sign Up</span>
+  </a>
+
+  <!-- Find A Table Button -->
+  <a href="#reservation" class="btn btn-secondary scroll-to-reservation">
+    <span class="text text-1">Find A Table</span>
+    <span class="text text-2" aria-hidden="true">Find A Table</span>
+  </a>
+</div>
+
+
+
+
+
+      <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
+        <span class="line line-1"></span>
+        <span class="line line-2"></span>
+        <span class="line line-3"></span>
+      </button>
+
+      <div class="overlay" data-nav-toggler data-overlay></div>
+
+    </div>
+  </header>
+
+
+
+
+
+  <main>
+    <article>
+
+      <!-- 
+        - #HERO
+      -->
+
+      <section class="hero text-center" aria-label="home" id="home">
+
+        <ul class="hero-slider" data-hero-slider>
+
+          <li class="slider-item active" data-hero-slider-item>
+
+            <div class="slider-bg">
+              <img src="./assets/images/hero-slider-1.jpg" width="1880" height="950" alt="" class="img-cover">
+            </div>
+
+            <p class="label-2 section-subtitle slider-reveal">Tradational & Hygine</p>
+
+            <h1 class="display-1 hero-title slider-reveal">
+              For the love of <br>
+              delicious food
+            </h1>
+
+            <p class="body-2 hero-text slider-reveal">
+              Come with family & feel the joy of mouthwatering food
+            </p>
+
+            <a href="#" class="btn btn-primary slider-reveal">
+              <span class="text text-1">View Our Menu</span>
+
+              <span class="text text-2" aria-hidden="true">View Our Menu</span>
+            </a>
+
+          </li>
+
+          <li class="slider-item" data-hero-slider-item>
+
+            <div class="slider-bg">
+              <img src="./assets/images/hero-slider-2.jpg" width="1880" height="950" alt="" class="img-cover">
+            </div>
+
+            <p class="label-2 section-subtitle slider-reveal">delightful experience</p>
+
+            <h1 class="display-1 hero-title slider-reveal">
+              Flavors Inspired by <br>
+              the Seasons
+            </h1>
+
+            <p class="body-2 hero-text slider-reveal">
+              Come with family & feel the joy of mouthwatering food
+            </p>
+
+            <a href="#" class="btn btn-primary slider-reveal">
+              <span class="text text-1">View Our Menu</span>
+
+              <span class="text text-2" aria-hidden="true">View Our Menu</span>
+            </a>
+
+          </li>
+
+          <li class="slider-item" data-hero-slider-item>
+
+            <div class="slider-bg">
+              <img src="./assets/images/hero-slider-3.jpg" width="1880" height="950" alt="" class="img-cover">
+            </div>
+
+            <p class="label-2 section-subtitle slider-reveal">amazing & delicious</p>
+
+            <h1 class="display-1 hero-title slider-reveal">
+              Where every flavor <br>
+              tells a story
+            </h1>
+
+            <p class="body-2 hero-text slider-reveal">
+              Come with family & feel the joy of mouthwatering food
+            </p>
+
+            <a href="#" class="btn btn-primary slider-reveal">
+              <span class="text text-1">View Our Menu</span>
+
+              <span class="text text-2" aria-hidden="true">View Our Menu</span>
+            </a>
+
+          </li>
+
+        </ul>
+
+        <button class="slider-btn prev" aria-label="slide to previous" data-prev-btn>
+          <ion-icon name="chevron-back"></ion-icon>
+        </button>
+
+        <button class="slider-btn next" aria-label="slide to next" data-next-btn>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </button>
+
+        <a href="#" class="hero-btn has-after">
+          <img src="./assets/images/hero-icon.png" width="48" height="48" alt="booking icon">
+
+          <span class="label-2 text-center span">Book A Table</span>
+        </a>
+
+      </section>
+
+
+
+
+
+      <!-- 
+        - #SERVICE
+      -->
+
+      <section class="section service bg-black-10 text-center" aria-label="service">
+        <div class="container">
+
+          <p class="section-subtitle label-2">Flavors For Royalty</p>
+
+          <h2 class="headline-1 section-title">We Offer Top Notch</h2>
+
+          <p class="section-text">
+            Indulge in the art of Indian dining — where every dish is crafted with heritage, spiced with royalty, and served with elegance. At Crown & Spice, we don’t just serve food — we present an experience fit for kings.
+          </p>
+
+          <ul class="grid-list">
+
+            <li>
+              <div class="service-card">
+
+                <a href="#" class="has-before hover:shine">
+                  <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
+                    <img src="./assets/images/service-1.jpg" width="285" height="336" loading="lazy" alt="Breakfast"
+                      class="img-cover">
+                  </figure>
+                </a>
+
+                <div class="card-content">
+
+                  <h3 class="title-4 card-title">
+                    <a href="#">Breakfast</a>
+                  </h3>
+
+                  <a href="#" class="btn-text hover-underline label-2">View Menu</a>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card">
+
+                <a href="#" class="has-before hover:shine">
+                  <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
+                    <img src="./assets/images/service-2.jpg" width="285" height="336" loading="lazy" alt="Appetizers"
+                      class="img-cover">
+                  </figure>
+                </a>
+
+                <div class="card-content">
+
+                  <h3 class="title-4 card-title">
+                    <a href="#">Appetizers</a>
+                  </h3>
+
+                  <a href="#" class="btn-text hover-underline label-2">View Menu</a>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card">
+
+                <a href="#" class="has-before hover:shine">
+                  <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
+                    <img src="./assets/images/service-3.jpg" width="285" height="336" loading="lazy" alt="Drinks"
+                      class="img-cover">
+                  </figure>
+                </a>
+
+                <div class="card-content">
+
+                  <h3 class="title-4 card-title">
+                    <a href="#">Drinks</a>
+                  </h3>
+
+                  <a href="#" class="btn-text hover-underline label-2">View Menu</a>
+
+                </div>
+
+              </div>
+            </li>
+
+          </ul>
+
+          <img src="./assets/images/shape-1.png" width="246" height="412" loading="lazy" alt="shape"
+            class="shape shape-1 move-anim">
+          <img src="./assets/images/shape-2.png" width="343" height="345" loading="lazy" alt="shape"
+            class="shape shape-2 move-anim">
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #ABOUT
+      -->
+
+      <section class="section about text-center" aria-labelledby="about-label" id="about">
+        <div class="container">
+
+          <div class="about-content">
+
+            <p class="label-2 section-subtitle" id="about-label">Our Story</p>
+
+            <h2 class="headline-1 section-title">Every Spice Tells 
+                      a Royal Tale
+</h2>
+
+            <p class="section-text">
+             Crown & Spice is more than a restaurant — it is a royal homage to India’s majestic culinary legacy. Inspired by the grandeur of Nawabi kitchens and the timeless elegance of Indian spices, every dish is a masterpiece, handcrafted to evoke tradition, opulence, and flavor. Step into a world where every bite narrates a story of royalty, heritage, and unforgettable taste.
+            </p>
+
+            <div class="contact-label">Book Through Call</div>
+
+            <a href="tel:+804001234567" class="body-1 contact-number hover-underline">+91-98765-43210</a>
+
+            <a href="#" class="btn btn-primary">
+              <span class="text text-1">Read More</span>
+
+              <span class="text text-2" aria-hidden="true">Read More</span>
+            </a>
+
+          </div>
+
+          <figure class="about-banner">
+
+            <img src="./assets/images/about-banner.jpg" width="570" height="570" loading="lazy" alt="about banner"
+              class="w-100" data-parallax-item data-parallax-speed="1">
+
+            <div class="abs-img abs-img-1 has-before" data-parallax-item data-parallax-speed="1.75">
+              <img src="./assets/images/about-abs-image.jpg" width="285" height="285" loading="lazy" alt=""
+                class="w-100">
+            </div>
+
+            <div class="abs-img abs-img-2 has-before">
+              <img src="./assets/images/badge-2.png" width="133" height="134" loading="lazy" alt="">
+            </div>
+
+          </figure>
+
+          <img src="./assets/images/shape-3.png" width="197" height="194" loading="lazy" alt="" class="shape">
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #SPECIAL DISH
+      -->
+
+      <section class="special-dish text-center" aria-labelledby="dish-label">
+
+        <div class="special-dish-banner">
+          <img src="./assets/images/hyderabadi-veg-biryani.jpg" width="940" height="900" loading="lazy" alt="special dish"
+            class="img-cover">
+        </div>
+
+        <div class="special-dish-content bg-black-10">
+          <div class="container">
+
+            <img src="./assets/images/badge-1.png" width="28" height="41" loading="lazy" alt="badge" class="abs-img">
+
+            <p class="section-subtitle label-2">Special Dish</p>
+
+            <h2 class="headline-1 section-title">Royal Dum Biryani</h2>
+
+            <p class="section-text">
+              Fragrant basmati rice layered with tender marinated meat, slow-cooked on dum with aromatic spices, saffron, 
+              and love — a timeless treasure of Indian royal feasts.
+            </p>
+
+            <div class="wrapper">
+              <del class="del body-3">₹3,999</del>
+
+              <span class="span body-1">₹2,999</span>
+            </div>
+
+            <a href="#" class="btn btn-primary">
+              <span class="text text-1">View All Menu</span>
+
+              <span class="text text-2" aria-hidden="true">View All Menu</span>
+            </a>
+
+          </div>
+        </div>
+
+        <img src="./assets/images/shape-4.png" width="179" height="359" loading="lazy" alt="" class="shape shape-1">
+
+        <img src="./assets/images/shape-9.png" width="351" height="462" loading="lazy" alt="" class="shape shape-2">
+
+      </section>
+
+
+
+
+
+      <!-- 
+        - #MENU
+      -->
+
+      <section class="section menu" aria-label="menu-label" id="menu">
+        <div class="container">
+
+          <p class="section-subtitle text-center label-2">Special Selection</p>
+
+          <h2 class="headline-1 section-title text-center">Delicious Menu</h2>
+
+          <ul class="grid-list">
+
+            <li>
+              <div class="menu-card hover:card">
+
+                <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
+                  <img src="./assets/images/tandoori-salmon-LS.jpg" width="100" height="100" loading="lazy" alt="Greek Salad"
+                    class="img-cover">
+                </figure>
+
+                <div>
+
+                  <div class="title-wrapper">
+                    <h3 class="title-3">
+                      <a href="#" class="card-title">Amritsari Tandoori<br> Salmon</a>
+                    </h3>
+
+                    <span class="badge label-1">Seasonal</span>
+
+                    <span class="span title-2">₹ 2,299</span>
+                  </div>
+
+                  <p class="card-text label-1">
+Scottish salmon marinated in ajwain, Kashmiri chili, and hung curd, grilled in a clay tandoor, and served on a bed of roasted garlic spinach with mint foam — fire, flavor, and finesse.
+
+                  </p>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="menu-card hover:card">
+
+                <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
+                  <img src="./assets/images/sushi.jpg" width="100" height="100" loading="lazy" alt="Lasagne"
+                    class="img-cover">
+                </figure>
+
+                <div>
+
+                  <div class="title-wrapper">
+                    <h3 class="title-3">
+                      <a href="#" class="card-title">Malai Coconut Dessert Sushi</a>
+                    </h3>
+
+                    <span class="span title-2">₹ 799</span>
+                  </div>
+
+                  <p class="card-text label-1">
+Sticky jaggery coconut rice rolled with cardamom cream and dry fruits, served with rose syrup drizzle and gold foil.                  </p>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="menu-card hover:card">
+
+                <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
+                  <img src="./assets/images/taco.jpg" width="100" height="100" loading="lazy" alt="Butternut Pumpkin"
+                    class="img-cover">
+                </figure>
+
+                <div>
+
+                  <div class="title-wrapper">
+                    <h3 class="title-3">
+                      <a href="#" class="card-title"> Truffle Butter Naan Tacos</a>
+                    </h3>
+
+                    <span class="span title-2">₹ 1,199</span>
+                  </div>
+
+                  <p class="card-text label-1">
+Mini naan tacos stuffed with spiced chicken or mushroom, finished with truffle butter drizzle and microgreens — desi bite, global style.
+
+                  </p>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="menu-card hover:card">
+
+                <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
+                  <img src="./assets/images/pannerr.jpg" width="100" height="100" loading="lazy" alt="Tokusen Wagyu"
+                    class="img-cover">
+                </figure>
+
+                <div>
+
+                  <div class="title-wrapper">
+                    <h3 class="title-3">
+                      <a href="#" class="card-title">Zafrani Paneer Tikka</a>
+                    </h3>
+
+                    <span class="badge label-1">New</span>
+
+                    <span class="span title-2">₹ 850</span>
+                  </div>
+
+                  <p class="card-text label-1">
+Soft cubes of paneer marinated in saffron yogurt and slow-roasted in a clay oven — smoky, rich, and regal.
+
+                  </p>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="menu-card hover:card">
+
+                <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
+                  <img src="./assets/images/tandoori-malai-broccoli.jpg" width="100" height="100" loading="lazy" alt="Olivas Rellenas"
+                    class="img-cover">
+                </figure>
+
+                <div>
+
+                  <div class="title-wrapper">
+                    <h3 class="title-3">
+                      <a href="#" class="card-title">Miso Tandoori Broccoli</a>
+                    </h3>
+
+                    <span class="span title-2">₹ 750</span>
+                  </div>
+
+                  <p class="card-text label-1">
+Charred broccoli florets marinated in a miso-tandoori glaze, finished with toasted sesame and yuzu drizzle — umami meets spice.
+
+                  </p>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="menu-card hover:card">
+
+                <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
+                  <img src="./assets/images/tanccc.jpg" width="100" height="100" loading="lazy" alt="Opu Fish"
+                    class="img-cover">
+                </figure>
+
+                <div>
+
+                  <div class="title-wrapper">
+                    <h3 class="title-3">
+                      <a href="#" class="card-title">Butter Chicken Masala 
+                        <br>with Saffron Naan</a>
+                    </h3>
+
+                    <span class="span title-2">₹ 1,299</span>
+                  </div>
+
+                  <p class="card-text label-1">
+Tender tandoori chicken simmered in a rich, buttery tomato cream sauce infused with fenugreek and Kashmiri chili. Served with soft saffron-infused naan brushed with ghee — the crown jewel of North Indian cuisine, elevated for royalty.
+
+                  </p>
+
+                </div>
+
+              </div>
+            </li>
+
+          </ul>
+
+          <p class="menu-text text-center">
+            During winter daily from <span class="span">7:00 pm</span> to <span class="span">9:00 pm</span>
+          </p>
+
+          <a href="#" class="btn btn-primary">
+            <span class="text text-1">View All Menu</span>
+
+            <span class="text text-2" aria-hidden="true">View All Menu</span>
+          </a>
+
+          <img src="./assets/images/shape-5.png" width="921" height="1036" loading="lazy" alt="shape"
+            class="shape shape-2 move-anim">
+          <img src="./assets/images/shape-6.png" width="343" height="345" loading="lazy" alt="shape"
+            class="shape shape-3 move-anim">
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #TESTIMONIALS
+      -->
+
+      <section class="section testi text-center has-bg-image"
+        style="background-image: url('./assets/images/testimonial-bg.jpg')" aria-label="testimonials">
+        <div class="container">
+
+          <div class="quote">”</div>
+
+          <p class="headline-2 testi-text">
+            Dine like royalty. Relish the legacy. Only at Crown & Spice.
+          </p>
+
+          <div class="wrapper">
+            <div class="separator"></div>
+            <div class="separator"></div>
+            <div class="separator"></div>
+          </div>
+
+          <div class="profile">
+            <img src="./assets/images/TEST3.jpg" width="200" height="250" loading="lazy" alt="Sam Jhonson"
+              class="img">
+
+            <p class="label-2 profile-name">Jeevan M V</p>
+          </div>
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #RESERVATION
+      -->
+
+<section class="reservation" id="reservation">
+        <div class="container">
+
+          <div class="form reservation-form bg-black-10">
+
+            <form action="" class="form-left">
+
+              <h2 class="headline-1 text-center">Online Reservation</h2>
+
+              <p class="form-text text-center">
+                Booking request <a href="tel:+88123123456" class="link">+91 98765 43210</a>
+                or fill out the order form
+              </p>
+
+              <div class="input-wrapper">
+                <input type="text" name="name" placeholder="Your Name" autocomplete="off" class="input-field">
+
+                <input type="tel" name="phone" placeholder="Phone Number" autocomplete="off" class="input-field">
+              </div>
+
+              <div class="input-wrapper">
+
+                <div class="icon-wrapper">
+                  <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+
+                  <select name="person" class="input-field">
+                    <option value="1-person">1 Person</option>
+                    <option value="2-person">2 Person</option>
+                    <option value="3-person">3 Person</option>
+                    <option value="4-person">4 Person</option>
+                    <option value="5-person">5 Person</option>
+                    <option value="6-person">6 Person</option>
+                    <option value="7-person">7 Person</option>
+                  </select>
+
+                  <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                </div>
+
+                <div class="icon-wrapper">
+                  <ion-icon name="calendar-clear-outline" aria-hidden="true"></ion-icon>
+
+                  <input type="date" name="reservation-date" class="input-field">
+
+                  <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                </div>
+
+                <div class="icon-wrapper">
+                  <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+
+                  <select name="person" class="input-field">
+                  
+                    <option value="09:00am">09 : 00 am</option>
+                    <option value="010:00am">10 : 00 am</option>
+                    <option value="011:00am">11 : 00 am</option>
+                    <option value="012:00am">12 : 00 am</option>
+                    <option value="01:00pm">01 : 00 pm</option>
+                    <option value="02:00pm">02 : 00 pm</option>
+                    <option value="03:00pm">03 : 00 pm</option>
+                    <option value="04:00pm">04 : 00 pm</option>
+                    <option value="05:00pm">05 : 00 pm</option>
+                    <option value="06:00pm">06 : 00 pm</option>
+                    <option value="07:00pm">07 : 00 pm</option>
+                    <option value="08:00pm">08 : 00 pm</option>
+                    <option value="09:00pm">09 : 00 pm</option>
+                    <option value="10:00pm">10 : 00 pm</option>
+                    <option value="11:00pm">11 : 00 pm</option>
+                    <option value="12:00pm">12 : 00 pm</option>
+                    <option value="01:00pm">01 : 00 pm</option>
+                  </select>
+
+                  <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                </div>
+
+              </div>
+
+              <textarea name="message" placeholder="Message" autocomplete="off" class="input-field"></textarea>
+
+              <button type="submit" class="btn btn-secondary">
+                <span class="text text-1">Book A Table</span>
+
+                <span class="text text-2" aria-hidden="true">Book A Table</span>
+              </button>
+
+            </form>
+
+            <div class="form-right text-center" style="background-image: url('./assets/images/form-pattern.png')">
+
+              <h2 class="headline-1 text-center">Contact Us</h2>
+
+              <p class="contact-label">Booking Request</p>
+
+              <a href="tel:+88123123456" class="body-1 contact-number hover-underline">+91 98765 43210</a>
+
+              <div class="separator"></div>
+
+              <p class="contact-label">Location</p>
+
+              <address class="body-4">
+                MG Road, Delicious City, <br>
+                Bangalore 560001, India
+              </address>
+
+              <p class="contact-label">Lunch Time</p>
+
+              <p class="body-4">
+                Monday to Sunday <br>
+                11.00 am - 2.30 pm
+              </p>
+
+              <p class="contact-label">Dinner Time</p>
+
+              <p class="body-4">
+                Monday to Sunday <br>
+                05.00 pm - 01.00 am
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #FEATURES
+      -->
+
+      <section class="section features text-center" aria-label="features">
+        <div class="container">
+
+          <p class="section-subtitle label-2">Why Choose Us</p>
+
+          <h2 class="headline-1 section-title">Our Strength</h2>
+
+          <ul class="grid-list">
+
+            <li class="feature-item">
+              <div class="feature-card">
+
+                <div class="card-icon">
+                  <img src="./assets/images/features-icon-1.png" width="100" height="80" loading="lazy" alt="icon">
+                </div>
+
+                <h3 class="title-2 card-title">Hygienic Food</h3>
+
+                <p class="label-1 card-text">Prepared with purity and care, using the freshest Indian ingredients in a spotless kitchen.</p>
+
+              </div>
+            </li>
+
+            <li class="feature-item">
+              <div class="feature-card">
+
+                <div class="card-icon">
+                  <img src="./assets/images/features-icon-2.png" width="100" height="80" loading="lazy" alt="icon">
+                </div>
+
+                <h3 class="title-2 card-title">Fresh Environment</h3>
+
+                <p class="label-1 card-text">Step into a regal ambiance where luxury meets serenity and every meal feels like an occasion.</p>
+
+              </div>
+            </li>
+
+            <li class="feature-item">
+              <div class="feature-card">
+
+                <div class="card-icon">
+                  <img src="./assets/images/features-icon-3.png" width="100" height="80" loading="lazy" alt="icon">
+                </div>
+
+                <h3 class="title-2 card-title">Skilled Chefs</h3>
+
+                <p class="label-1 card-text">Our master chefs bring Nawabi traditions to life with unmatched artistry and flavor.</p>
+
+              </div>
+            </li>
+
+            <li class="feature-item">
+              <div class="feature-card">
+
+                <div class="card-icon">
+                  <img src="./assets/images/features-icon-4.png" width="100" height="80" loading="lazy" alt="icon">
+                </div>
+
+                <h3 class="title-2 card-title">Event & Party</h3>
+
+                <p class="label-1 card-text">From royal feasts to festive gatherings, we host unforgettable celebrations with grandeur.</p>
+
+              </div>
+            </li>
+
+          </ul>
+
+          <img src="./assets/images/shape-7.png" width="208" height="178" loading="lazy" alt="shape"
+            class="shape shape-1">
+
+          <img src="./assets/images/shape-8.png" width="120" height="115" loading="lazy" alt="shape"
+            class="shape shape-2">
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #EVENT
+      -->
+
+      <section class="section event bg-black-10" aria-label="event">
+        <div class="container">
+
+          <p class="section-subtitle label-2 text-center">Recent Updates</p>
+
+          <h2 class="section-title headline-1 text-center">Upcoming Event</h2>
+
+          <ul class="grid-list">
+
+            <li>
+              <div class="event-card has-before hover:shine">
+
+                <div class="card-banner img-holder" style="--width: 350; --height: 450;">
+                  <img src="./assets/images/event-3.jpg" width="350" height="450" loading="lazy"
+                    alt="Flavour so good you’ll try to eat with your eyes." class="img-cover">
+
+                  <time class="publish-date label-2" datetime="2022-09-15">2025-05-20</time>
+                </div>
+
+                <div class="card-content">
+                  <p class="card-subtitle label-2 text-center">Food, Flavour</p>
+
+                  <h3 class="card-title title-2 text-center">
+                    Flavour so good you’ll try to eat with your eyes.
+                  </h3>
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="event-card has-before hover:shine">
+
+                <div class="card-banner img-holder" style="--width: 350; --height: 450;">
+                  <img src="./assets/images/event-2.jpg" width="350" height="450" loading="lazy"
+                    alt="Flavour so good you’ll try to eat with your eyes." class="img-cover">
+
+                  <time class="publish-date label-2" datetime="2022-09-08">2025-05-25</time>
+                </div>
+
+                <div class="card-content">
+                  <p class="card-subtitle label-2 text-center">Healthy Food</p>
+
+                  <h3 class="card-title title-2 text-center">
+                    A majestic blend of heritage and health.
+                  </h3>
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="event-card has-before hover:shine">
+
+                <div class="card-banner img-holder" style="--width: 350; --height: 450;">
+                  <img src="./assets/images/event-1.jpg" width="350" height="450" loading="lazy"
+                    alt="Flavour so good you’ll try to eat with your eyes." class="img-cover">
+
+                  <time class="publish-date label-2" datetime="2022-09-03">2025-05-29</time>
+                </div>
+
+                <div class="card-content">
+                  <p class="card-subtitle label-2 text-center">Nawabi Feast</p>
+
+                  <h3 class="card-title title-2 text-center">
+                    A Nawabi feast you’ll remember for a lifetime.
+                  </h3>
+                </div>
+
+              </div>
+            </li>
+
+          </ul>
+
+          <a href="#" class="btn btn-primary">
+            <span class="text text-1">View Our Blog</span>
+
+            <span class="text text-2" aria-hidden="true">View Our Blog</span>
+          </a>
+
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+
+
+
+
+  <!-- 
+    - #FOOTER
+  -->
+<footer class="footer section has-bg-image text-center" id="contact"
+        style="background-image: url('./assets/images/footer-bg.jpg'); background-size: cover; background-position: center;">
+
+    <div class="container">
+
+      <div class="footer-top grid-list">
+
+        <div class="footer-brand has-before has-after">
+
+          <a href="#" class="logo">
+            <img src="./assets/images/new logo3.jpg" width="160" height="50" loading="lazy" alt="Crown & Spice home">
+          </a>
+
+          <address class="body-4">
+            MG Road, Delicious City, Bangalore 560001, India
+          </address>
+
+          <a href="mailto:booking@Crown & Spice.com" class="body-4 contact-link">booking@Crown&Spice.com</a>
+
+          <a href="tel:+88123123456" class="body-4 contact-link">Booking Request : +91-98765-43210</a>
+
+          <p class="body-4">
+            Open : 09:00 am - 01:00 pm
+          </p>
+
+          <div class="wrapper">
+            <div class="separator"></div>
+            <div class="separator"></div>
+            <div class="separator"></div>
+          </div>
+
+          <p class="title-1">Get News & Offers</p>
+
+          <p class="label-1">
+            Subscribe us & Get <span class="span">25% Off.</span>
+          </p>
+
+          <form action="" class="input-wrapper">
+            <div class="icon-wrapper">
+              <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+
+              <input type="email" name="email_address" placeholder="Your email" autocomplete="off" class="input-field">
+            </div>
+
+            <button type="submit" class="btn btn-secondary">
+              <span class="text text-1">Subscribe</span>
+
+              <span class="text text-2" aria-hidden="true">Subscribe</span>
+            </button>
+          </form>
+
+        </div>
+
+        <ul class="footer-list">
+
+          <li>
+            <a href="#" class="label-2 footer-link hover-underline">Home</a>
+          </li>
+
+          <li>
+            <a href="#" class="label-2 footer-link hover-underline">Menus</a>
+          </li>
+
+          <li>
+            <a href="#" class="label-2 footer-link hover-underline">About Us</a>
+          </li>
+
+          
+          <li>
+            <a href="#" class="label-2 footer-link hover-underline">Contact</a>
+          </li>
+
+        </ul>
+
+        <ul class="footer-list">
+
+          <li>
+            <a href="#" class="label-2 footer-link hover-underline">Facebook</a>
+          </li>
+
+          <li>
+            <a href="#" class="label-2 footer-link hover-underline">Instagram</a>
+          </li>
+
+          <li>
+            <a href="#" class="label-2 footer-link hover-underline">Twitter</a>
+          </li>
+
+          <li>
+            <a href="#" class="label-2 footer-link hover-underline">Youtube</a>
+          </li>
+
+          <li>
+            <a href="#" class="label-2 footer-link hover-underline">Google Map</a>
+          </li>
+
+        </ul>
+
+      </div>
+
+      <div class="footer-bottom">
+
+        <p class="copyright">
+          &copy; 2025 Crown & Spice. All Rights Reserved | Crafted by <a href="https://github.com/Crown & Spice"
+            target="_blank" class="link">Crown & Spice</a>
+        </p>
+
+      </div>
+
+    </div>
+  </footer>
+
+
+
+
+
+  <!-- 
+    - #BACK TO TOP
+  -->
+
+  <a href="#top" class="back-top-btn active" aria-label="back to top" data-back-top-btn>
+    <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="./assets/js/script.js"></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+
+
+
+<script>
+  document.querySelectorAll('.scroll-to-reservation').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const section = document.querySelector('#reservation');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal popup-container" style="display: none;">
+  <div class="popup">
+    <span class="close">&times;</span>
+    <img src="./assets/images/new logo3.jpg" alt="Hotel Emblem" style="height: 50px; margin: 0 auto 20px; display: block;" />
+
+    <h2>Login / Sign Up</h2>
+
+    <form id="loginForm">
+      <input type="text" id="emailPhone" placeholder="Gmail or Phone Number" required />
+      <input type="password" placeholder="Password" required />
+      <button type="submit" class="login-btn">Login</button>
+
+<div class="horizontal-separator"><span>OR</span></div>
+
+      <div class="social-login">
+        <button type="button" class="social-btn google">
+          <img class="icon" src="./assets/images/google.png" alt="Google logo">
+          Continue with Google
+        </button>
+
+        <button type="button" class="social-btn microsoft">
+          <img class="icon" src="./assets/images/micro.png" alt="Microsoft logo">
+          Continue with Microsoft
+        </button>
+
+        <button type="button" class="social-btn apple">
+          <img class="icon" src="./assets/images/apl.jpg" alt="Apple logo">
+          Continue with Apple
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- DETAILS POPUP -->
+<div id="detailsModal" class="modal popup-container" style="display: none;">
+  <div class="popup">
+    <span class="close">&times;</span>
+    <img src="./assets/images/new logo3.jpg" alt="Hotel Emblem" style="height: 50px; margin: 0 auto 20px; display: block;" />
+    <h2>Tell us about you</h2>
+    <form id="detailsForm">
+      <input type="text" id="fullName" placeholder="Full Name" required />
+<input type="text" id="birthday" placeholder="DD/MM/YYYY" maxlength="11" required />
+<div id="nameError" style="color: red; font-size: 12px;"></div>
+<div id="dateError" style="color: red; font-size: 12px;"></div>
+
+      <button type="submit" class="login-btn">Continue</button>
+    </form>
+  </div>
+</div>
+
+
+<script>
+  const loginForm = document.getElementById('loginForm');
+  const detailsModal = document.getElementById('detailsModal');
+  const detailsForm = document.getElementById('detailsForm');
+  const loginModal = document.getElementById('loginModal');
+  const closeButtons = document.querySelectorAll('.close');
+  const loginButton = document.querySelector('.login-signup-button');
+  const birthdayInput = document.getElementById('birthday');
+
+
+
+birthdayInput.addEventListener('input', function (e) {
+  let value = birthdayInput.value.replace(/[^\d]/g, '');
+
+  if (value.length >= 3 && value.length <= 4) {
+    value = value.slice(0, 2) + '/' + value.slice(2);
+  } else if (value.length > 4) {
+    value = value.slice(0, 2) + '/' + value.slice(2, 4) + '/' + value.slice(4, 8);
+  }
+
+  birthdayInput.value = value;
+});
+
+// Allow deleting slashes normally
+birthdayInput.addEventListener('keydown', function (e) {
+  const key = e.key;
+  if (key === 'Backspace' || key === 'Delete') {
+    // Let default behavior work — don't interfere
+    return;
+  }
+});
+
+
+  // ✅ Toggle login or logout menu
+  loginButton.addEventListener('click', function (e) {
+  e.preventDefault();
+  const isLoggedIn = loginButton.classList.contains('logged-in');
+
+  if (isLoggedIn) {
+    document.getElementById('logoutModal').style.display = 'flex';
+  } else {
+    loginModal.style.display = 'flex';
+  }
+});
+
+
+  // ✅ Step 1: Login form validation
+  loginForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const input = document.getElementById('emailPhone').value.trim();
+    const isGmail = /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(input);
+    const isPhone = /^\+91\d{10}$/.test(input);
+
+    if (!isGmail && !isPhone) {
+      alert("Enter a valid Gmail address or Indian phone number (+91XXXXXXXXXX)");
+      return;
+    }
+
+    loginModal.style.display = 'none';
+    detailsModal.style.display = 'flex';
+  });
+
+  // ✅ Step 2: Details form validation
+  detailsForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('fullName').value.trim();
+    const birthday = document.getElementById('birthday').value.trim();
+    const nameError = document.getElementById('nameError');
+    const dateError = document.getElementById('dateError');
+
+    nameError.innerText = '';
+    dateError.innerText = '';
+
+    let hasError = false;
+
+    if (!/^[A-Za-z]{1,}/.test(name)) {
+      nameError.innerText = "Please enter a valid name (at least 1 letter)";
+      hasError = true;
+    }
+
+    const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+    if (!dateRegex.test(birthday)) {
+      dateError.innerText = "Enter birthday in DD/MM/YYYY format";
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    detailsModal.style.display = 'none';
+    document.querySelector('.login-signup-button span').innerText = `Welcome, ${name}`;
+    loginButton.classList.add('logged-in');
+  });
+
+  // ✅ Handle logout
+  document.getElementById('logoutBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector('.login-signup-button span').innerText = 'Login / Sign Up';
+    loginButton.classList.remove('logged-in');
+  });
+
+  // ✅ Allow closing modals
+closeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    loginModal.style.display = 'none';
+    detailsModal.style.display = 'none';
+    document.getElementById('logoutModal').style.display = 'none';
+  });
+});
+
+
+  
+document.getElementById('confirmLogout').addEventListener('click', function () {
+  document.querySelector('.login-signup-button span').innerText = 'Login / Sign Up';
+  loginButton.classList.remove('logged-in');
+  document.getElementById('logoutModal').style.display = 'none';
+});
+
+
+
+</script>
+
+
+
+<style>
+.modal.popup-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+}
+
+.popup {
+  background: #141414;
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  color: white;
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.popup input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  background: #222;
+  color: white;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #f4c542;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.separator {
+  text-align: center;
+  margin: 20px 0;
+  color: #aaa;
+  position: relative;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  background: #555;
+  height: 1px;
+  width: 40%;
+  position: absolute;
+  top: 50%;
+}
+
+.separator::before {
+  left: 0;
+}
+
+.separator::after {
+  right: 0;
+}
+
+.separator span {
+  background: #141414;
+  padding: 0 12px;
+  font-style: normal;
+  transform: none;
+}
+
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.social-btn {
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.google {
+  background-color: #db4437;
+}
+
+.microsoft {
+  background-color: #2f2f2f;
+}
+
+.apple {
+  background-color: #000;
+}
+
+.social-btn:hover {
+  opacity: 0.9;
+}
+</style>
+
+<!-- LOGOUT CONFIRMATION POPUP -->
+<div id="logoutModal" class="modal popup-container" style="display: none;">
+  <div class="popup" style="text-align: center;">
+    <span class="close">&times;</span>
+    <h2 style="margin-bottom: 16px;">Logout</h2>
+    <p style="margin-bottom: 24px;">Are you sure you want to logout?</p>
+    <button id="confirmLogout" class="login-btn">Yes, Logout</button>
+  </div>
+</div>
+
+
+
+</body>
+
+</html>
